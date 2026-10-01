@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ο Πιο Αδύναμος Κρίκος UAT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@600;800;900&family=Commissioner:wght@400;500;700&family=Roboto+Mono:wght@500;700&display=swap&subset=greek">
+<style>
+/* Layout: TV-studio stage. Left: the glowing UAT chain ladder. Right: the voting floor with players + verdict spotlight. Below: Akrita's question bank. Single committed dark look (studio lights). */
+:root{
+  color-scheme: dark;
+  --stage:#060a18;
+  --stage-2:#0b1330;
+  --panel:#0e1838;
+  --line:#25356b;
+  --ice:#8cbcff;
+  --ice-deep:#3d6fe0;
+  --white:#eef3ff;
+  --muted:#8c97bf;
+  --red:#ff3d55;
+  --amber:#ffc24a;
+  --f-display:"Fira Sans Extra Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Commissioner","Segoe UI",Roboto,Arial,sans-serif;
+  --f-mono:"Roboto Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{background:var(--stage)}
+body{
+  background:
+    radial-gradient(1200px 600px at 70% -10%, rgba(61,111,224,.28), transparent 60%),
+    radial-gradient(800px 500px at 0% 30%, rgba(140,188,255,.10), transparent 60%),
+    var(--stage);
+  color:var(--white);
+  font-family:var(--f-body);
+  font-size:15px;
+  line-height:1.55;
+  padding-inline:16px;
+  padding-block:0 48px;
+  min-height:100%;
+}
+.wrap{max-width:1180px;margin:0 auto}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,textarea:focus-visible{outline:2px solid var(--ice);outline-offset:3px}
+
+/* ---------- Hero ---------- */
+header.hero{padding-block:40px 28px;display:grid;gap:14px}
+.eyebrow{
+  font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ice);
+  display:flex;gap:10px;flex-wrap:wrap;align-items:center
+}
+.eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red);animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.25}}
+h1{
+  font-family:var(--f-display);font-weight:900;margin:0;
+  font-size:clamp(44px,9vw,112px);line-height:.88;letter-spacing:-.01em;text-transform:uppercase;
+  text-wrap:balance;
+  background:linear-gradient(180deg,#ffffff 0%,#c9dcff 55%,#6f9cf0 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 28px rgba(140,188,255,.35));
+}
+h1 small{display:block;font-size:.34em;letter-spacing:.06em;color:var(--ice);-webkit-text-fill-color:var(--ice);margin-top:.35em;font-weight:800}
+.lede{max-width:62ch;color:var(--muted);margin:0;font-size:16px}
+.lede b{color:var(--white);font-weight:700}
+
+/* ---------- Stage grid ---------- */
+.stage{display:grid;grid-template-columns:260px minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:860px){.stage{grid-template-columns:minmax(0,1fr)}}
+
+/* Chain ladder */
+.chain{
+  background:linear-gradient(180deg,var(--stage-2),var(--stage));
+  border:1px solid var(--line);border-radius:14px;padding:18px 16px;
+}
+.chain h2,.floor h2,.bank h2{
+  font-family:var(--f-display);font-weight:800;text-transform:uppercase;letter-spacing:.06em;
+  font-size:18px;margin:0 0 12px;color:var(--ice)
+}
+.links{list-style:none;margin:0;padding:0;display:flex;flex-direction:column-reverse;gap:6px}
+.links li{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:7px 14px;border-radius:999px;border:1.5px solid var(--line);
+  font-family:var(--f-display);font-weight:600;font-size:16px;letter-spacing:.03em;color:var(--muted);
+  transition:all .35s ease;
+}
+.links li span:last-child{font-family:var(--f-mono);font-size:11px;opacity:.8}
+.links li.done{border-color:var(--ice-deep);color:var(--white);background:rgba(61,111,224,.18)}
+.links li.now{border-color:var(--ice);color:#06102a;background:var(--ice);box-shadow:0 0 22px rgba(140,188,255,.55)}
+.chain .bank-note{margin:14px 0 0;font-size:12.5px;color:var(--muted)}
+@media (max-width:860px){
+  .links{flex-direction:row;flex-wrap:wrap}
+  .links li{flex:1 1 140px}
+}
+
+/* Floor */
+.floor{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:18px;min-width:0}
+.floor-top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px}
+.status{font-family:var(--f-mono);font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.status b{color:var(--white)}
+.players{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.player{
+  position:relative;padding:14px 12px 12px;border-radius:10px;border:1.5px solid var(--line);
+  background:linear-gradient(180deg,#13204a,#0c1533);text-align:center;min-width:0;
+  transition:transform .12s ease,border-color .12s ease,box-shadow .12s ease;
+}
+.player .pname{font-family:var(--f-display);font-weight:800;font-size:20px;letter-spacing:.02em;overflow-wrap:anywhere}
+.player .pmeta{font-family:var(--f-mono);font-size:10.5px;color:var(--muted);margin-top:2px}
+.player.hot{border-color:var(--ice);box-shadow:0 0 0 2px var(--ice),0 0 26px rgba(140,188,255,.6);transform:scale(1.04)}
+.player.out{opacity:.38;border-style:dashed;filter:grayscale(1)}
+.player.out .pname{text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:2px}
+.player.out::after{
+  content:"ΑΠΟΧΩΡΗΣΕ";position:absolute;top:6px;right:6px;font-family:var(--f-mono);font-size:9px;
+  color:var(--red);letter-spacing:.08em
+}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{
+  border:0;border-radius:999px;padding:12px 22px;font-family:var(--f-display);font-weight:800;
+  font-size:18px;letter-spacing:.06em;text-transform:uppercase
+}
+.btn-vote{background:var(--red);color:#fff;box-shadow:0 0 24px rgba(255,61,85,.45)}
+.btn-vote:hover{filter:brightness(1.1)}
+.btn-vote:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:transparent;border:1.5px solid var(--line);color:var(--white);font-size:15px;padding:10px 18px}
+.btn-ghost:hover{border-color:var(--ice)}
+details.edit{border-top:1px solid var(--line);padding-top:14px}
+details.edit summary{cursor:pointer;color:var(--ice);font-weight:500}
+details.edit p{margin:8px 0;color:var(--muted);font-size:13px}
+textarea{
+  width:100%;min-height:96px;background:var(--stage);color:var(--white);border:1px solid var(--line);
+  border-radius:8px;padding:10px;font-family:var(--f-body);font-size:14px;resize:vertical
+}
+
+/* Verdict spotlight */
+.verdict{
+  position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:16px;
+  background:radial-gradient(circle at 50% 40%,rgba(20,34,80,.85),rgba(3,5,12,.96) 70%);
+}
+.card{
+  width:min(640px,100%);border-radius:18px;padding:28px 26px 22px;position:relative;
+  background:linear-gradient(180deg,#101c45,#08102a);border:1.5px solid var(--ice-deep);
+  box-shadow:0 0 0 1px rgba(140,188,255,.15),0 30px 80px rgba(0,0,0,.6),0 0 60px rgba(61,111,224,.35);
+  display:grid;gap:14px;animation:drop .45s cubic-bezier(.2,.9,.3,1.2)
+}
+@keyframes drop{from{transform:translateY(-18px) scale(.97);opacity:0}}
+.card .q{font-family:var(--f-mono);font-size:12px;color:var(--ice);letter-spacing:.04em}
+.card .who{font-family:var(--f-display);font-weight:900;font-size:clamp(40px,8vw,64px);line-height:.95;text-transform:uppercase}
+.card .roast{font-size:18px;margin:0;max-width:52ch}
+.dump{
+  justify-self:start;font-family:var(--f-mono);font-size:12px;border:1.5px solid var(--red);color:var(--red);
+  padding:5px 10px;border-radius:4px;transform:rotate(-2deg);letter-spacing:.03em;overflow-wrap:anywhere
+}
+.dump b{color:var(--white);font-weight:700}
+.final{
+  font-family:var(--f-display);font-weight:800;font-size:clamp(22px,4.4vw,30px);line-height:1.15;
+  color:var(--white);border-top:1px solid var(--line);padding-top:14px;min-height:2.4em;margin:0
+}
+.final em{font-style:normal;color:var(--red)}
+.card .controls{justify-content:flex-end}
+.toast{font-size:12.5px;color:var(--ice);min-height:1.2em}
+
+/* Question bank */
+.bank{margin-top:44px}
+.bank-head{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.bank-head p{margin:0;color:var(--muted);max-width:60ch}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{border:1.5px solid var(--line);background:transparent;border-radius:999px;padding:6px 14px;font-size:13px;color:var(--muted)}
+.tab[aria-pressed="true"]{border-color:var(--ice);color:var(--white);background:rgba(61,111,224,.2)}
+.qgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+@media (max-width:420px){.qgrid{grid-template-columns:minmax(0,1fr)}}
+.qcard{
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;
+  display:grid;grid-template-rows:auto 1fr auto;gap:10px;min-width:0
+}
+.qcard .tag{font-family:var(--f-mono);font-size:10.5px;color:var(--ice);letter-spacing:.1em;text-transform:uppercase}
+.qcard p{margin:0;font-size:16px;font-weight:500}
+.qcard p code{font-family:var(--f-mono);font-size:.86em;color:var(--amber)}
+.qcard button{justify-self:start;background:transparent;border:0;color:var(--muted);font-size:12.5px;padding:0}
+.qcard button:hover{color:var(--ice)}
+
+footer{margin-top:48px;border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer b{color:var(--white)}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+
+</head>
+<body>
+<div class="wrap" lang="el">
+  <header class="hero">
+    <div class="eyebrow"><span class="dot" aria-hidden="true"></span> Live από το QAS · ECC → S/4HANA · UAT Cycle</div>
+    <h1>Ο πιο αδύναμος κρίκος<small>UAT Edition</small></h1>
+    <p class="lede">Εννιά βήματα μέχρι το go-live. Δεκατρείς developers. Ένα ST22 που δεν κοιμάται ποτέ. Σε κάθε γύρο η ομάδα ψηφίζει και κάποιος φεύγει με <b>άδεια χέρια και ένα ανοιχτό defect</b>.</p>
+  </header>
+
+  <section class="stage">
+    <aside class="chain" aria-label="Η αλυσίδα του έργου">
+      <h2>Η αλυσίδα</h2>
+      <ol class="links" id="links"></ol>
+      <p class="bank-note">Κάθε αποχώρηση ανεβάζει την αλυσίδα ένα βήμα. Όποιος μείνει τελευταίος παίρνει το hypercare.</p>
+    </aside>
+
+    <div class="floor">
+      <div class="floor-top">
+        <h2>Ψηφοφορία</h2>
+        <div class="status" id="status"></div>
+      </div>
+      <div class="players" id="players" aria-live="polite"></div>
+      <div class="controls">
+        <button class="btn btn-vote" id="vote">Ψηφίστε</button>
+        <button class="btn btn-ghost" id="reset">Νέο παιχνίδι</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Καμία αλυσίδα δεν κόπηκε πραγματικά κατά τη διάρκεια αυτού του UAT.</span>
+  </footer>
+</div>
+
+<div class="verdict" id="verdict" hidden role="dialog" aria-modal="true" aria-labelledby="who">
+  <div class="card">
+    <div class="q" id="vq"></div>
+    <div class="who" id="who"></div>
+    <p class="roast" id="roast"></p>
+    <div class="dump" id="dump"></div>
+    <p class="final" id="final"></p>
+    <div class="toast" id="toast"></div>
+    <div class="controls">
+      <button class="btn btn-ghost" id="copy">Αντιγραφή για Teams</button>
+      <button class="btn btn-vote" id="bye">Αποχώρησε</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const NAMES = ["Θανάσης","Σωτήρης","Γιώργος","Γιάννης","Chrak","Βαγγέλης","Χρήστος","Δημήτρης","Στάθης","Φώτης","Μαρία","Κώστας","Βασίλης"];
+
+  const LINKS = [
+    ["Unit test","SE80"],["SIT","QAS"],["UAT κύκλος 1","QAS"],["UAT κύκλος 2","QAS"],
+    ["Regression","QAS"],["Mock cutover","PRE"],["Cutover","PRD"],["Go-live","PRD"],["Hypercare","PRD"]
+  ];
+
+  const QUESTIONS = {
+    "Defects":[
+      "Ποιος άνοιξε περισσότερα defects απ' όσα έκλεισε;",
+      "Ποιος έκλεισε defect ως «Works as designed» χωρίς να έχει δει ποτέ το design;",
+      "Ποιος έχει defect ανοιχτό από τον πρώτο κύκλο και το λέει «known issue»;",
+      "Ποιος κάνει reopen στο ίδιο defect για τρίτη φορά και λέει ότι φταίει ο key user;",
+      "Ποιος έφτιαξε ένα defect και άνοιξε άλλα τρία;"
+    ],
+    "Short dumps":[
+      "Ποιος ανοίγει <code>ST22</code> πιο συχνά απ' το Instagram;",
+      "Ποιος έφαγε <code>TIME_OUT</code> και το είπε «λίγο αργό»;",
+      "Ποιος λέει «είναι θέμα authorization» σε κάθε dump;",
+      "Ποιος έχει δικό του φάκελο στο <code>ST22</code> με το όνομά του;",
+      "Ποιος έφαγε <code>GETWA_NOT_ASSIGNED</code> και κάνει ακόμα ότι δεν ξέρει τι είναι field-symbol;"
+    ],
+    "Κώδικας":[
+      "Ποιος έγραψε <code>SELECT *</code> μέσα σε <code>LOOP</code> και το ονόμασε performance tuning;",
+      "Ποιος έχει hardcoded company code «προσωρινά» από το 2014;",
+      "Ποιος έχει περισσότερα ATC findings απ' ό,τι γραμμές κώδικα;",
+      "Ποιος άφησε <code>BREAK-POINT</code> στο QAS και ο key user νόμιζε ότι κόλλησε το SAP;",
+      "Ποιος έβαλε <code>COMMIT WORK</code> μέσα σε BAdI «για σιγουριά»;"
+    ],
+    "S/4HANA":[
+      "Ποιος κάνει ακόμα <code>SELECT</code> από το <code>KONV</code> και απορεί που δεν φέρνει τίποτα;",
+      "Ποιος ανοίγει ακόμα <code>XD03</code> και θυμώνει που τον στέλνει στο BP;",
+      "Ποιος ψάχνει ακόμα τα totals στο <code>GLT0</code>;",
+      "Ποιος νομίζει ότι το <code>ACDOCA</code> είναι κάποιος συνάδελφος από το Basis;",
+      "Ποιος περίμενε ότι το custom code migration θα το κάνει μόνο του το ATC;"
+    ],
+    "Transports":[
+      "Ποιος έκανε release transport Παρασκευή στις 18:00;",
+      "Ποιος ξέχασε πάλι το object εκτός transport;",
+      "Ποιος γύρισε με return code 8 και το είπε warning;",
+      "Ποιος έχει 47 transports για ένα defect;",
+      "Ποιος είναι ο λόγος που ο Basis δεν απαντάει πια στο Teams;"
+    ],
+    "Δικαιολογίες":[
+      "Ποιος απαντάει σε κάθε defect «στο DEV δουλεύει»;",
+      "Ποιος ρώτησε τι εννοεί το functional spec την ημέρα του go-live;",
+      "Ποιος είπε «είναι data issue» πριν ανοίξει καν το debugger;",
+      "Ποιος λέει «θα το δω αύριο» από τον Αύγουστο;",
+      "Ποιος δεν έκανε unit test γιατί «θα το βρει το UAT»;"
+    ]
+  };
+
+  const ROASTS = [
+    "Άνοιξες {n} defects και έκλεισες δύο. Και αυτά ως duplicate.",
+    "Το ST22 σε ξέρει με το μικρό σου όνομα.",
+    "Έκανες release Παρασκευή απόγευμα. Το QAS ακόμα σε ψάχνει.",
+    "Το «στο DEV δουλεύει» δεν είναι test evidence.",
+    "Ο SELECT σου μέσα στο LOOP τρέχει ακόμα. Από χθες.",
+    "Το ATC σου έβγαλε {n} findings. Τα μισά είναι priority 1.",
+    "Ψάχνεις ακόμα δεδομένα στο KONV. Στο S/4 είμαστε.",
+    "Το transport σου γύρισε με return code 8 και εσύ το είπες warning.",
+    "Ο key user έκλαψε πάνω στο test script σου.",
+    "Το TIME_OUT σου το μέτρησαν σε εργάσιμες μέρες.",
+    "Ο κώδικάς σου έχει περισσότερα hardcoded BUKRS απ' όσες εταιρείες έχει ο όμιλος.",
+    "Άφησες BREAK-POINT στο QAS. Ο key user περίμενε σαράντα λεπτά.",
+    "Είπες «θέμα authorization». Ήταν division by zero.",
+    "Έκλεισες το defect ως «Works as designed». Το design ήταν δικό σου.",
+    "Ξέχασες το include εκτός transport. Για {n}η φορά.",
+    "Το unit test σου ήταν να το τρέξεις μία φορά και να πεις «ok».",
+    "Ο functional σε ρώτησε κάτι απλό. Του απάντησες με ένα dump."
+  ];
+
+  const DUMPS = [
+    "TIME_OUT","CONVERT_NO_NUMBER","ITAB_DUPLICATE_KEY","DBSQL_SQL_ERROR","MESSAGE_TYPE_X",
+    "OBJECTS_OBJREF_NOT_ASSIGNED","GETWA_NOT_ASSIGNED","COMPUTE_INT_ZERODIVIDE","SYNTAX_ERROR","TSV_TNEW_PAGE_ALLOC_FAILED"
+  ];
+
+  const $ = id => document.getElementById(id);
+  const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const rnd = a => a[Math.floor(Math.random()*a.length)];
+  const allQuestions = Object.values(QUESTIONS).flat();
+
+  const names = NAMES.slice();
+
+  let out = [];          // eliminated names in order
+  let pending = null;    // current verdict
+  let bag = [];
+  let busy = false;
+
+  function nextRoast(){
+    if (!bag.length) bag = ROASTS.map((_,i)=>i).sort(()=>Math.random()-.5);
+    return ROASTS[bag.pop()];
+  }
+  function strip(html){ const d=document.createElement("div"); d.innerHTML=html; return d.textContent; }
+
+  function renderLinks(){
+    const level = Math.min(out.length, LINKS.length);
+    $("links").innerHTML = LINKS.map((l,i)=>{
+      const cls = i < level ? "done" : (i === level ? "now" : "");
+      return `<li class="${cls}"><span>${l[0]}</span><span>${l[1]}</span></li>`;
+    }).join("");
+  }
+  function alive(){ return names.filter(n => !out.includes(n)); }
+  function renderPlayers(hot){
+    $("players").innerHTML = names.map((n,i)=>{
+      const isOut = out.includes(n);
+      const pos = isOut ? `Γύρος ${out.indexOf(n)+1}` : "Στην αλυσίδα";
+      return `<div class="player${isOut?" out":""}${hot===n?" hot":""}" data-i="${i}"><div class="pname"></div><div class="pmeta">${pos}</div></div>`;
+    }).join("");
+    [...$("players").children].forEach((el,i)=> el.querySelector(".pname").textContent = names[i]);
+    const a = alive().length;
+    $("status").innerHTML = `Γύρος <b>${out.length+1}</b> · Παραμένουν <b>${a}</b> / ${names.length}`;
+    $("vote").disabled = a < 2;
+    $("vote").textContent = a < 2 ? "Έχουμε νικητή" : "Ψηφίστε";
+  }
+  function render(hot){ renderLinks(); renderPlayers(hot); }
+
+  function vote(){
+    const a = alive();
+    if (busy || a.length < 2) return;
+    busy = true;
+    const pick = rnd(a);
+    const q = rnd(allQuestions);
+    if (reduce) return reveal(pick, q);
+    let steps = 14 + Math.floor(Math.random()*6), i = 0, delay = 60;
+    (function spin(){
+      const isLast = i >= steps;
+      render(isLast ? pick : rnd(a));
+      if (isLast) return setTimeout(()=>reveal(pick,q), 500);
+      i++; delay *= 1.12; setTimeout(spin, delay);
+    })();
+  }
+
+  function reveal(name, q){
+    const n = 3 + Math.floor(Math.random()*44);
+    const roast = nextRoast().replace("{n}", n);
+    const dump = rnd(DUMPS);
+    pending = {name, roast, dump, q: strip(q)};
+    $("vq").textContent = "Ερώτηση: " + pending.q;
+    $("who").textContent = name;
+    $("roast").textContent = roast;
+    $("dump").innerHTML = `Αιτία αποχώρησης: <b>${dump}</b>`;
+    $("final").innerHTML = "";
+    $("toast").textContent = "";
+    $("verdict").hidden = false;
+    $("bye").focus();
+    const text = "Λυπάμαι πολύ. Είσαι ο πιο αδύναμος κρίκος.";
+    if (reduce) { $("final").innerHTML = "<em>Λυπάμαι πολύ.</em> Είσαι ο πιο αδύναμος κρίκος."; return; }
+    let k = 0;
+    setTimeout(function type(){
+      k++;
+      const s = text.slice(0,k);
+      $("final").innerHTML = s.length <= 14 ? `<em>${s}</em>` : `<em>${text.slice(0,14)}</em>${s.slice(14)}`;
+      if (k < text.length) setTimeout(type, 38);
+    }, 700);
+  }
+
+  function bye(){
+    if (!pending) return;
+    out.push(pending.name);
+    pending = null;
+    $("verdict").hidden = true;
+    busy = false;
+    render();
+    const a = alive();
+    if (a.length === 1) winner(a[0]);
+  }
+
+  function winner(name){
+    $("vq").textContent = "Τελικός γύρος";
+    $("who").textContent = name;
+    $("roast").textContent = "Επέζησες από όλους τους κύκλους του UAT. Το έπαθλο είναι δικό σου: το hypercare, μόνος σου, τα Σαββατοκύριακα.";
+    $("dump").innerHTML = "Status: <b>SIGNED OFF</b>";
+    $("final").innerHTML = "<em>Συγχαρητήρια.</em> Είσαι ο πιο δυνατός κρίκος. Προς το παρόν.";
+    $("toast").textContent = "";
+    $("bye").textContent = "Κλείσιμο";
+    pending = {name, roast:$("roast").textContent, dump:"SIGNED OFF", q:"Τελικός γύρος", win:true};
+    $("verdict").hidden = false;
+  }
+
+  function copy(){
+    if (!pending) return;
+    const t = pending.win
+      ? `🏆 ${pending.name}: ${pending.roast}`
+      : `${pending.name}. ${pending.roast} (Αιτία αποχώρησης: ${pending.dump})\nΛυπάμαι πολύ. Είσαι ο πιο αδύναμος κρίκος.`;
+    const done = () => $("toast").textContent = "Αντιγράφηκε. Καλή επιτυχία στο Teams.";
+    try {
+      navigator.clipboard.writeText(t).then(done).catch(()=>{ $("toast").textContent = t; });
+    } catch(e){ $("toast").textContent = t; }
+  }
+
+  $("reset").onclick = ()=>{ out = []; busy = false; render(); };
+  $("vote").onclick = vote;
+  $("bye").onclick = ()=>{ if (pending && pending.win){ $("verdict").hidden = true; pending=null; $("bye").textContent="Αποχώρησε"; return; } bye(); };
+  $("copy").onclick = copy;
+  document.addEventListener("keydown", e=>{ if (e.key==="Escape" && !$("verdict").hidden) $("bye").click(); });
+
+  render();
+})();
+</script>
+</body>
+</html>
